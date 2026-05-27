@@ -54,6 +54,13 @@ const en: Dict = {
   "theme.toDark": "Switch to dark mode",
   "lang.toggle": "Mudar para Português",
 
+  "footer.disclaimer":
+    "This is a study project. The reference architectures shown here are educational examples and do not represent official SAP recommendations.",
+  "footer.madeWith": "Made with",
+  "footer.by": "by",
+  "footer.purpose":
+    "Built for learning and to help others exploring SAP BTP architectures.",
+
   // Scenarios
   "scenario.s4hana-extension.title": "S/4HANA Extension",
   "scenario.s4hana-extension.description":
@@ -180,6 +187,13 @@ const ptBR: Dict = {
   "theme.toLight": "Mudar para modo claro",
   "theme.toDark": "Mudar para modo escuro",
   "lang.toggle": "Switch to English",
+
+  "footer.disclaimer":
+    "Este é um projeto de estudos. As arquiteturas de referência apresentadas aqui são exemplos educacionais e não representam recomendações oficiais da SAP.",
+  "footer.madeWith": "Feito com",
+  "footer.by": "por",
+  "footer.purpose":
+    "Criado para aprendizado e para ajudar outras pessoas explorando arquiteturas SAP BTP.",
 
   // Cenários
   "scenario.s4hana-extension.title": "Extensão do S/4HANA",

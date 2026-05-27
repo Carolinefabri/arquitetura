@@ -8,6 +8,7 @@ import {
 import { ServiceDetailPanel } from "./components/ServiceDetailPanel";
 import { ExportButton } from "./components/ExportButton";
 import { Hero } from "./components/Hero";
+import { Footer } from "./components/Footer";
 import { serviceCatalog, type ServiceInfo } from "./data/serviceCatalog";
 import { architectures } from "./data/architectures";
 import { useTranslation } from "./i18n/i18n";
@@ -95,6 +96,8 @@ function App() {
         service={activeService}
         onClose={() => setActiveService(null)}
       />
+
+      <Footer />
     </main>
   );
 }
