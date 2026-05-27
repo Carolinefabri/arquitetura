@@ -10,6 +10,7 @@ import {
   CloudUpload,
   type LucideIcon,
 } from "lucide-react";
+import { useTranslation } from "../i18n/i18n";
 
 export type Scenario = {
   id: string;
@@ -86,19 +87,19 @@ export function ScenarioSelector({
   onSelect,
   selectedId,
 }: ScenarioSelectorProps) {
+  const { t } = useTranslation();
   return (
     <section className="w-full px-4 py-10 sm:px-6 sm:py-12 md:py-16">
       <div className="mx-auto max-w-7xl">
         <header className="mb-8 text-center sm:mb-10">
           <p className="text-xs font-semibold tracking-widest text-[#0070F3] uppercase sm:text-sm">
-            Scenarios
+            {t("selector.eyebrow")}
           </p>
           <h2 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl md:text-4xl dark:text-slate-100">
-            Choose your scenario
+            {t("selector.title")}
           </h2>
           <p className="mt-3 text-sm text-slate-600 sm:text-base md:text-lg dark:text-slate-400">
-            Pick the use case that best matches your project to generate a
-            tailored reference architecture.
+            {t("selector.subtitle")}
           </p>
         </header>
 
@@ -131,12 +132,15 @@ function ScenarioCard({
   isSelected,
   onSelect,
 }: ScenarioCardProps) {
+  const { t } = useTranslation();
   const Icon = scenario.icon;
+  const title = t(`scenario.${scenario.id}.title`);
+  const description = t(`scenario.${scenario.id}.description`);
 
   return (
     <motion.button
       type="button"
-      onClick={() => onSelect?.(scenario)}
+      onClick={() => onSelect?.({ ...scenario, title, description })}
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay: index * 0.05, ease: "easeOut" }}
@@ -164,15 +168,15 @@ function ScenarioCard({
 
       <div>
         <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
-          {scenario.title}
+          {title}
         </h3>
         <p className="mt-1.5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-          {scenario.description}
+          {description}
         </p>
       </div>
 
       <span className="mt-auto inline-flex items-center gap-1 text-sm font-medium text-[#0070F3] opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-        Select scenario
+        {t("selector.cta")}
         <motion.span
           aria-hidden
           initial={{ x: 0 }}

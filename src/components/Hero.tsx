@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
 import { Network } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
+import { LanguageToggle } from "./LanguageToggle";
+import { useTranslation } from "../i18n/i18n";
 
 export function Hero() {
+  const { t } = useTranslation();
   return (
     <header className="relative isolate overflow-hidden">
       {/* Animated gradient background */}
@@ -43,10 +46,13 @@ export function Hero() {
           <div className="flex items-center gap-2 text-white/90">
             <Network className="h-5 w-5" />
             <span className="text-sm font-semibold tracking-widest uppercase">
-              SAP BTP Architecture Tool
+              {t("brand.tag")}
             </span>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <LanguageToggle />
+            <ThemeToggle />
+          </div>
         </div>
 
         <motion.h1
@@ -55,7 +61,7 @@ export function Hero() {
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="max-w-4xl text-3xl font-bold leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl"
         >
-          SAP BTP Architecture Decision Tool
+          {t("hero.title")}
         </motion.h1>
 
         <motion.p
@@ -64,9 +70,7 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
           className="max-w-2xl text-base text-white/85 sm:text-lg md:text-xl"
         >
-          Choose your scenario, explore a reference architecture, and export a
-          professional proposal — all grounded in SAP Business Technology
-          Platform best practices.
+          {t("hero.subtitle")}
         </motion.p>
       </div>
     </header>

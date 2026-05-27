@@ -7,6 +7,7 @@ import {
   type Architecture,
   type ScenarioId,
 } from "../data/architectures";
+import { useTranslation } from "../i18n/i18n";
 
 export type { ScenarioId } from "../data/architectures";
 
@@ -23,11 +24,12 @@ export function ArchitectureDiagram({
     () => architectures[scenarioId],
     [scenarioId]
   );
+  const { t } = useTranslation();
 
   if (!diagram) {
     return (
       <div className="flex h-[480px] items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-white text-sm text-slate-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400">
-        Architecture diagram for this scenario is coming soon.
+        {t("diagram.comingSoon")}
       </div>
     );
   }
@@ -54,27 +56,28 @@ export function ArchitectureDiagram({
   );
 }
 
-const legendItems: { label: string; color: string }[] = [
-  { label: "Source", color: layerColors.source },
-  { label: "Edge", color: layerColors.edge },
-  { label: "Integration", color: layerColors.integration },
-  { label: "Core (BTP)", color: layerColors.core },
-  { label: "Auth", color: layerColors.auth },
-  { label: "Data", color: layerColors.data },
-  { label: "AI", color: layerColors.ai },
-  { label: "UI", color: layerColors.ui },
+const legendItems: { key: string; color: string }[] = [
+  { key: "source", color: layerColors.source },
+  { key: "edge", color: layerColors.edge },
+  { key: "integration", color: layerColors.integration },
+  { key: "core", color: layerColors.core },
+  { key: "auth", color: layerColors.auth },
+  { key: "data", color: layerColors.data },
+  { key: "ai", color: layerColors.ai },
+  { key: "ui", color: layerColors.ui },
 ];
 
 function DiagramLegend() {
+  const { t } = useTranslation();
   return (
     <div className="pointer-events-none absolute bottom-4 left-1/2 z-10 flex max-w-[90%] -translate-x-1/2 flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-2xl border border-slate-200 bg-white/90 px-3 py-2 text-[11px] font-medium text-slate-600 shadow-sm backdrop-blur sm:gap-x-4 sm:text-xs dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-300">
       {legendItems.map((item) => (
-        <span key={item.label} className="flex items-center gap-1.5">
+        <span key={item.key} className="flex items-center gap-1.5">
           <span
             className="inline-block h-2.5 w-2.5 rounded-full"
             style={{ background: item.color }}
           />
-          {item.label}
+          {t(`diagram.legend.${item.key}`)}
         </span>
       ))}
     </div>

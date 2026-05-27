@@ -5,6 +5,7 @@ import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import type { Architecture } from "../data/architectures";
 import { serviceCatalog } from "../data/serviceCatalog";
+import { useTranslation } from "../i18n/i18n";
 
 type ExportButtonProps = {
   architecture: Architecture;
@@ -19,10 +20,11 @@ const BORDER = "#e2e8f0";
 export function ExportButton({ architecture, diagramRef }: ExportButtonProps) {
   const [isExporting, setIsExporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   const handleExport = async () => {
     if (!diagramRef.current) {
-      setError("Diagram is not ready yet.");
+      setError(t("export.notReady"));
       return;
     }
 
@@ -39,7 +41,7 @@ export function ExportButton({ architecture, diagramRef }: ExportButtonProps) {
       await buildPdf(canvas, architecture);
     } catch (err) {
       console.error(err);
-      setError("Failed to export PDF. See console for details.");
+      setError(t("export.failed"));
     } finally {
       setIsExporting(false);
     }
@@ -58,12 +60,12 @@ export function ExportButton({ architecture, diagramRef }: ExportButtonProps) {
         {isExporting ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" />
-            Exporting...
+            {t("export.loading")}
           </>
         ) : (
           <>
             <Download className="h-4 w-4" />
-            Export PDF
+            {t("export.button")}
           </>
         )}
       </motion.button>
