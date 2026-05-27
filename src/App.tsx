@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ScenarioSelector, type Scenario } from "./components/ScenarioSelector";
 import {
@@ -16,7 +16,6 @@ import { useTranslation } from "./i18n/i18n";
 function App() {
   const [selected, setSelected] = useState<Scenario | null>(null);
   const [activeService, setActiveService] = useState<ServiceInfo | null>(null);
-  const diagramRef = useRef<HTMLDivElement | null>(null);
   const { t } = useTranslation();
 
   const architecture = selected
@@ -46,13 +45,10 @@ function App() {
               <h3 className="text-lg font-semibold text-slate-900 sm:text-xl dark:text-slate-100">
                 {selected.title} — {t("app.referenceArch")}
               </h3>
-              <ExportButton
-                architecture={architecture}
-                diagramRef={diagramRef}
-              />
+              <ExportButton architecture={architecture} />
             </div>
 
-            <div ref={diagramRef}>
+            <div>
               <ArchitectureDiagram
                 scenarioId={selected.id as ScenarioId}
                 onNodeClick={(nodeId) => {

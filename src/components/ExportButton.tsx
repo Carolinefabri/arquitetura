@@ -1,15 +1,17 @@
 import { useState, type RefObject } from "react";
+import { createRoot } from "react-dom/client";
 import { motion } from "framer-motion";
 import { Download, Loader2 } from "lucide-react";
 import html2canvas from "html2canvas-pro";
 import { jsPDF } from "jspdf";
+import { Background, ReactFlow } from "@xyflow/react";
 import type { Architecture } from "../data/architectures";
 import { serviceCatalog } from "../data/serviceCatalog";
 import { useTranslation } from "../i18n/i18n";
 
 type ExportButtonProps = {
   architecture: Architecture;
-  diagramRef: RefObject<HTMLElement | null>;
+  diagramRef?: RefObject<HTMLElement | null>;
 };
 
 const PRIMARY = "#0070F3";
@@ -17,27 +19,16 @@ const ACCENT = "#00B386";
 const MUTED = "#475569";
 const BORDER = "#e2e8f0";
 
-export function ExportButton({ architecture, diagramRef }: ExportButtonProps) {
+export function ExportButton({ architecture }: ExportButtonProps) {
   const [isExporting, setIsExporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { t } = useTranslation();
 
   const handleExport = async () => {
-    if (!diagramRef.current) {
-      setError(t("export.notReady"));
-      return;
-    }
-
     setError(null);
     setIsExporting(true);
     try {
-      const canvas = await html2canvas(diagramRef.current, {
-        backgroundColor: "#ffffff",
-        scale: 2,
-        useCORS: true,
-        logging: false,
-      });
-
+      const canvas = await captureDiagramOffscreen(architecture);
       await buildPdf(canvas, architecture);
     } catch (err) {
       console.error(err);
@@ -72,6 +63,72 @@ export function ExportButton({ architecture, diagramRef }: ExportButtonProps) {
       {error && <p className="text-xs text-rose-600">{error}</p>}
     </div>
   );
+}
+
+// ---------- Off-screen diagram capture ----------
+
+// Renders the architecture at a fixed desktop size off-screen so the PDF
+// looks the same regardless of the device the user is on (esp. mobile).
+async function captureDiagramOffscreen(
+  arch: Architecture
+): Promise<HTMLCanvasElement> {
+  const WIDTH = 1200;
+  const HEIGHT = 700;
+
+  const host = document.createElement("div");
+  host.setAttribute("aria-hidden", "true");
+  host.style.cssText = [
+    "position:fixed",
+    "left:-10000px",
+    "top:0",
+    `width:${WIDTH}px`,
+    `height:${HEIGHT}px`,
+    "background:#ffffff",
+    "z-index:-1",
+    "pointer-events:none",
+    "overflow:hidden",
+  ].join(";");
+  document.body.appendChild(host);
+
+  const root = createRoot(host);
+  root.render(
+    <div style={{ width: WIDTH, height: HEIGHT, background: "#ffffff" }}>
+      <ReactFlow
+        nodes={arch.nodes}
+        edges={arch.edges}
+        fitView
+        fitViewOptions={{ padding: 0.15 }}
+        proOptions={{ hideAttribution: true }}
+        nodesDraggable={false}
+        nodesConnectable={false}
+        elementsSelectable={false}
+        panOnDrag={false}
+        zoomOnScroll={false}
+        zoomOnPinch={false}
+        zoomOnDoubleClick={false}
+      >
+        <Background gap={16} color="#e2e8f0" />
+      </ReactFlow>
+    </div>
+  );
+
+  // Give ReactFlow time to measure nodes and apply fitView
+  await new Promise((r) => setTimeout(r, 650));
+
+  try {
+    const canvas = await html2canvas(host, {
+      backgroundColor: "#ffffff",
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      width: WIDTH,
+      height: HEIGHT,
+    });
+    return canvas;
+  } finally {
+    root.unmount();
+    host.remove();
+  }
 }
 
 // ---------- PDF construction ----------
