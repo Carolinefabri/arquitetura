@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #0070f3;
+  --color-accent: #00b386;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  background-color: #f8fafc;
+  color: #0f172a;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html.dark body {
+  background-color: #0b1220;
+  color: #e2e8f0;
+}
+
+/* React Flow dark adjustments */
+html.dark .react-flow__controls button {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-color: #334155;
+}
+html.dark .react-flow__controls button:hover {
+  background: #334155;
+}
+html.dark .react-flow__attribution {
+  background: transparent;
+}
