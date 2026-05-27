@@ -1,7 +1,7 @@
 import { useState, type RefObject } from "react";
 import { motion } from "framer-motion";
 import { Download, Loader2 } from "lucide-react";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
 import { jsPDF } from "jspdf";
 import type { Architecture } from "../data/architectures";
 import { serviceCatalog } from "../data/serviceCatalog";
