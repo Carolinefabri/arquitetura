@@ -6,5 +6,5 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   // Adicione esta linha com o nome EXATO do seu repositório no GitHub:
-  base: '/sap-btp-architecture-tool/', 
+  base: '/arquitetura/', 
 })
